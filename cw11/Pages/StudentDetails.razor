@@ -1,0 +1,59 @@
+﻿@page "/students/{ID:int}"
+@inject IStudentService service
+@inject NavigationManager NavigationManager
+
+
+@if (student != null)
+{
+    <h1> <u>Student Details</u></h1>
+    <hr>
+    <form>
+        <div>
+            <label>
+                <span>First name: </span>
+                <input @bind="student.FirstName" />
+            </label>
+
+            <label>
+                <span>Avatar: </span>
+                <img src=@student.Avatar width ="200" height="200">
+            </label>
+        </div>
+
+        <label>
+            <span>Last name: </span>
+            <input @bind="student.LastName" />
+        </label>
+
+        <label>
+            <span>Birth date: </span>
+            <input @bind="student.BirthDate" />
+        </label>
+
+        <label>
+            <span>Studies: </span>
+            <input @bind="student.Studies" />
+        </label>
+        
+        <button type="reset" value="Reset" @onclick="(() => Return())">Return</button>
+    </form>
+}
+else
+{
+    <h1>There is no such student!</h1>
+    <hr>
+}
+
+@code {
+    [Parameter]
+    public int ID { get; set; }
+    private Student student;
+
+    protected override void OnInitialized()
+    {
+        student = service.GetStudent(ID);
+    }
+    private void Return() => NavigationManager.NavigateTo("/students");
+
+
+}
